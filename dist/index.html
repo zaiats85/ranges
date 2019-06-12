@@ -1,74 +1,16 @@
-Html Webpack Plugin:
-<pre>
-  Error: Child compilation failed:
-  Module build failed: Error: ENOENT: no such file or directory, open '/home/oleg/Desktop/art-typescript/node_modules/lodash/lodash.js':
-  Error: ENOENT: no such file or directory, open '/home/oleg/Desktop/art-typescript/node_modules/lodash/lodash.js'
-  
-  - compiler.js:79 childCompiler.runAsChild
-    [art-typescript]/[html-webpack-plugin]/lib/compiler.js:79:16
-  
-  - Compiler.js:306 compile
-    [art-typescript]/[webpack]/lib/Compiler.js:306:11
-  
-  - Compiler.js:630 hooks.afterCompile.callAsync.err
-    [art-typescript]/[webpack]/lib/Compiler.js:630:14
-  
-  
-  - Hook.js:154 AsyncSeriesHook.lazyCompileHook
-    [art-typescript]/[tapable]/lib/Hook.js:154:20
-  
-  - Compiler.js:627 compilation.seal.err
-    [art-typescript]/[webpack]/lib/Compiler.js:627:30
-  
-  
-  - Hook.js:154 AsyncSeriesHook.lazyCompileHook
-    [art-typescript]/[tapable]/lib/Hook.js:154:20
-  
-  - Compilation.js:1325 hooks.optimizeAssets.callAsync.err
-    [art-typescript]/[webpack]/lib/Compilation.js:1325:35
-  
-  
-  - Hook.js:154 AsyncSeriesHook.lazyCompileHook
-    [art-typescript]/[tapable]/lib/Hook.js:154:20
-  
-  - Compilation.js:1316 hooks.optimizeChunkAssets.callAsync.err
-    [art-typescript]/[webpack]/lib/Compilation.js:1316:32
-  
-  
-  - Hook.js:154 AsyncSeriesHook.lazyCompileHook
-    [art-typescript]/[tapable]/lib/Hook.js:154:20
-  
-  - Compilation.js:1311 hooks.additionalAssets.callAsync.err
-    [art-typescript]/[webpack]/lib/Compilation.js:1311:36
-  
-  
-  - Hook.js:154 AsyncSeriesHook.lazyCompileHook
-    [art-typescript]/[tapable]/lib/Hook.js:154:20
-  
-  - Compilation.js:1307 hooks.optimizeTree.callAsync.err
-    [art-typescript]/[webpack]/lib/Compilation.js:1307:32
-  
-  
-  - Hook.js:154 AsyncSeriesHook.lazyCompileHook
-    [art-typescript]/[tapable]/lib/Hook.js:154:20
-  
-  - Compilation.js:1244 Compilation.seal
-    [art-typescript]/[webpack]/lib/Compilation.js:1244:27
-  
-  - Compiler.js:624 hooks.make.callAsync.err
-    [art-typescript]/[webpack]/lib/Compiler.js:624:17
-  
-  
-  - Compilation.js:1095 _addModuleChain
-    [art-typescript]/[webpack]/lib/Compilation.js:1095:12
-  
-  - Compilation.js:1007 processModuleDependencies.err
-    [art-typescript]/[webpack]/lib/Compilation.js:1007:9
-  
-  - next_tick.js:131 _combinedTickCallback
-    internal/process/next_tick.js:131:7
-  
-  - next_tick.js:180 process._tickCallback
-    internal/process/next_tick.js:180:9
-  
-</pre>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div id="main"></div>
+
+<script src="main.js"></script>
+</body>
+</html>
