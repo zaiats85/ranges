@@ -13,6 +13,7 @@ const checkType = arr => {
         throw "wrong input";
     }
 };
+const comparator = (a, b) => a - b;
 const getMax = (arr) => Math.max(...arr);
 const getMin = (arr) => Math.min(...arr);
 
@@ -69,67 +70,15 @@ class RangeList {
      */
 
     constructor() {
-        this.rangeList = [];
-    }
-
-    checkToRemove(min, max){
-        let k = this.rangeList;
-        let m = k.length;
-        let i = 0;
-        if(max - min <= 0) return;
-
-        let testSet = rangeArray(min, max);
-        let result = [];
-
-        while(i < m){
-
-            if(k[i].intersection(new Set(testSet)).size){
-
-                let range = [...k[i]];
-                let upperBound = getMax(range) + 1;
-
-                let f1 = rangeArray(getMin(range), min);
-                let f2 = rangeArray(max, upperBound);
-
-                if(f1.length > 1){
-                    result.push(new Set(f1));
-                }
-                if(f2.length > 1){
-                    result.push(new Set(f2));
-                }
-
-            } else {
-                result.push(k[i]);
-            }
-
-            i++;
-        }
-
-        this.rangeList = result;
-    }
-
-    checkToAdd(min, max){
-        let k = this.rangeList;
-        let m = k.length;
-        let i = 0;
-
-        if(max - min <= 0) return;
-        let testSet = new Set(rangeArray(min, max));
-
-        while(i < m){
-            if(k[i].isSuperset(testSet)){
-                return false;
-            } else if(k[i].nextTo(testSet)){
-                return k[i] = k[i].union(testSet);
-            }
-            i++;
-        }
-
-        this.rangeList.push(testSet);
+        this.rangeList = new Set();
     }
 
     // TODO: implement this
     add(range) {
+
+        let min = range[0];
+        let max = range[1];
+        if(max - min <= 0) return;
 
         try {
             checkType(range)
@@ -138,7 +87,8 @@ class RangeList {
             return
         }
 
-        this.checkToAdd(range[0], range[1]);
+        let testSet = new Set(rangeArray(min, max));
+        this.rangeList = this.rangeList.union(testSet);
 
     }
 
@@ -155,7 +105,12 @@ class RangeList {
             return
         }
 
-        this.checkToRemove(range[0], range[1]);
+        let min = range[0];
+        let max = range[1];
+        if(max - min <= 0) return;
+
+        let testSet = new Set(rangeArray(min, max));
+        this.rangeList = this.rangeList.difference(testSet)
 
     }
 
@@ -165,12 +120,27 @@ class RangeList {
     // TODO: implement this
     print() {
         let str = "";
-        this.rangeList.forEach(set => {
-            let max = getMax(set) + 1;
-            let min = getMin(set);
-            str += `[${min},${max}) `;
-        });
-        console.log(str);
+        let arr = [...this.rangeList].sort(comparator);
+        let result = [];
+        let start = 0; // start index
+        let end = arr.length;
+
+        for (let i = 0; i < arr.length; i++) {
+
+            let diff = arr[i+1] - arr[i];
+
+            if( diff > 1 ){
+
+                let pos = arr.indexOf(arr[i+1]);
+
+                result.push(arr.slice(start, pos));
+                start = pos;
+            }
+        }
+
+        console.log(result);
+
+        // console.log(this.rangeList);
     }
 }
 
@@ -206,14 +176,14 @@ rl.add([3, 8]);
 // Should display: [1, 8) [9, 21)
 
 rl.remove([10, 10]);
-rl.print();
+//rl.print();
 // Should display: [1, 8) [9, 21)
 
 rl.remove("asdfasdfasdf");
 // Should throw: wrong input
 
 rl.remove([9, 11]);
-rl.print();
+//rl.print();
 // Should display: [1, 8) [11, 21)
 
 rl.remove([15, 17]);
@@ -224,6 +194,6 @@ rl.print();
 rl.add('asdfasd');
 // Should throw: wrong input
 
-rl.remove([3, 19]);
-rl.print();
+//rl.remove([3, 19]);
+//rl.print();
 // Should display: [1, 3) [19, 21)
