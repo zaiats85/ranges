@@ -8,3 +8,8 @@ test
 
 @TODO 
 Add karma unit testing;
+
+* See branches: 
+straightforward 
+test 
+implementing conceptually different approaches;
