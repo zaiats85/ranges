@@ -7,25 +7,30 @@
  * NOTE: Feel free to add any extra member variables/functions you like.
  */
 
+
+/******* UTILS ********/
 const rangeArray = (start, end) => Array.from({length: (end - start)}, (v, k) => k + start);
+
 const checkType = arr => {
     if (!Array.isArray(arr)) {
         throw "wrong input";
     }
 };
 const comparator = (a, b) => a - b;
-const getMax = (arr) => Math.max(...arr);
-const getMin = (arr) => Math.min(...arr);
 
-Set.prototype.isSuperset = function(subset) {
-    for (var elem of subset) {
-        if (!this.has(elem)) {
-            return false;
-        }
+const reducer = (acc, curVal) => {
+    const lastSubArray = acc[acc.length - 1];
+
+    if(!lastSubArray || lastSubArray[lastSubArray.length - 1] !== curVal - 1) {
+        acc.push([]);
     }
-    return true;
+
+    acc[acc.length - 1].push(curVal);
+
+    return acc;
 };
 
+/****** BOOST SET *******/
 Set.prototype.union = function(setB) {
     let union = new Set(this);
     for (let elem of setB) {
@@ -34,29 +39,9 @@ Set.prototype.union = function(setB) {
     return union;
 };
 
-Set.prototype.nextTo = function(setB) {
-    for (let elem of setB) {
-        if (this.has(elem + 1) || this.has(elem - 1)) {
-            return true;
-        }
-    }
-    return false;
-};
-
-Set.prototype.intersection = function(setB) {
-    let intersection = new Set();
-
-    for (let elem of setB) {
-        if (this.has(elem)) {
-            intersection.add(elem);
-        }
-    }
-    return intersection;
-};
-
 Set.prototype.difference = function(setB) {
-    var difference = new Set(this);
-    for (var elem of setB) {
+    let difference = new Set(this);
+    for (let elem of setB) {
         difference.delete(elem);
     }
     return difference;
@@ -78,7 +63,9 @@ class RangeList {
 
         let min = range[0];
         let max = range[1];
-        if(max - min <= 0) return;
+
+        // (min - max)єN only.
+        if(max - min <= 0 || max < 0 || min < 0) return;
 
         try {
             checkType(range)
@@ -120,27 +107,19 @@ class RangeList {
     // TODO: implement this
     print() {
         let str = "";
-        let arr = [...this.rangeList].sort(comparator);
-        let result = [];
-        let start = 0; // start index
-        let end = arr.length;
+        let i = 0;
+        let arr = [...this.rangeList];
+        let res = arr.sort(comparator).reduce(reducer, []);
 
-        for (let i = 0; i < arr.length; i++) {
+        while(i < res.length) {
 
-            let diff = arr[i+1] - arr[i];
+            // since is a consecutive sequence 1st := min, last := max. upperBound limit := max +1
+            str += `[${res[i].shift()} ${res[i].pop() + 1}) `;
 
-            if( diff > 1 ){
-
-                let pos = arr.indexOf(arr[i+1]);
-
-                result.push(arr.slice(start, pos));
-                start = pos;
-            }
+            i++
         }
 
-        console.log(result);
-
-        // console.log(this.rangeList);
+        console.log(str);
     }
 }
 
@@ -148,42 +127,48 @@ class RangeList {
 const rl = new RangeList();
 
 rl.add([1, 5]);
-//rl.print();
+rl.print();
 // Should display: [1, 5)
 
 rl.add([10, 20]);
-//rl.print();
+rl.print();
 // Should display: [1, 5) [10, 20)
 
 rl.add([9, 10]);
-//rl.print();
+rl.print();
 // Should display: [1, 5) [9, 20)
 
 rl.add([20, 20]);
-//rl.print();
+rl.print();
 // Should display: [1, 5) [9, 20)
 
 rl.add([20, 21]);
-//rl.print();
+rl.print();
 // Should display: [1, 5) [9, 21)
 
 rl.add([2, 4]);
-//rl.print();
+rl.print();
 // Should display: [1, 5) [9, 21)
 
+rl.add([13, 8]);
+// Should skip
+
+rl.add([-13, -8]);
+// Should skip
+
 rl.add([3, 8]);
-//rl.print();
+rl.print();
 // Should display: [1, 8) [9, 21)
 
 rl.remove([10, 10]);
-//rl.print();
+rl.print();
 // Should display: [1, 8) [9, 21)
 
 rl.remove("asdfasdfasdf");
 // Should throw: wrong input
 
 rl.remove([9, 11]);
-//rl.print();
+rl.print();
 // Should display: [1, 8) [11, 21)
 
 rl.remove([15, 17]);
@@ -194,6 +179,6 @@ rl.print();
 rl.add('asdfasd');
 // Should throw: wrong input
 
-//rl.remove([3, 19]);
-//rl.print();
+rl.remove([3, 19]);
+rl.print();
 // Should display: [1, 3) [19, 21)
